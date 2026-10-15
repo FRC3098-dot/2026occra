@@ -8,10 +8,9 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.util.sendable.SendableRegistry;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 
 /**
  * This is a demo program showing the use of the DifferentialDrive class. Runs the motors with
@@ -24,7 +23,7 @@ public class Robot extends TimedRobot {
   private final WPI_TalonSRX m_right2Motor = new WPI_TalonSRX(35);
   private final DifferentialDrive m_robotDrive =
       new DifferentialDrive(m_left1Motor, m_right1Motor);
-  private final Joystick m_stick = new Joystick(0);
+  private final XboxController m_stick = new XboxController(0);
 
   /** Called once at the beginning of the robot program. */
   public Robot() {
@@ -54,6 +53,6 @@ public class Robot extends TimedRobot {
     // Drive with arcade drive.
     // That means that the Y axis drives forward
     // and backward, and the X turns left and right.
-    m_robotDrive.arcadeDrive(-m_stick.getY(), -m_stick.getX());
+    m_robotDrive.arcadeDrive(-m_stick.getLeftY(), -m_stick.getRightX());
   }
 }
