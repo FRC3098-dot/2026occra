@@ -13,17 +13,24 @@ public class ShooterTeleop extends Command {
         m_shooter = shooter;
         m_stick = controller;
         addRequirements(m_shooter);
-        SmartDashboard.putNumber("Shooter Front Speed", 0.2);
-        SmartDashboard.putNumber("Shooter Back Speed", -0.15);
+        SmartDashboard.putNumber("Shooter Front Speed High", 0.7);
+        SmartDashboard.putNumber("Shooter Back Speed High", -0.5);
+        SmartDashboard.putNumber("Shooter Front Speed Low", 0.35);
+        SmartDashboard.putNumber("Shooter Back Speed Low", -0.25);
     }
 
     @Override
     public void execute() {
-        double frontSpeed = SmartDashboard.getNumber("Shooter Front Speed", 0.0);
-        double backSpeed = SmartDashboard.getNumber("Shooter Back Speed", 0.0);
-        m_shooter.setShooterSpeed(frontSpeed, backSpeed);
+        
+ 
         if (m_stick.getRightTriggerAxis() > 0.3) {
-            m_shooter.setShooterSpeed(frontSpeed, backSpeed);
+            double HighfrontSpeed = SmartDashboard.getNumber("Shooter Front Speed High", 0.0);
+            double HighbackSpeed = SmartDashboard.getNumber("Shooter Back Speed High", 0.0);
+            m_shooter.setShooterSpeed(HighfrontSpeed, HighbackSpeed);
+        } else if (m_stick.getRightBumperButton() == true) {
+            double LowfrontSpeed = SmartDashboard.getNumber("Shooter Front Speed Low", 0.0);
+            double LowbackSpeed = SmartDashboard.getNumber("Shooter Back Speed Low", 0.0);
+            m_shooter.setShooterSpeed(LowfrontSpeed, LowbackSpeed);
         } else {
             m_shooter.setShooterSpeed(0, 0);
         }

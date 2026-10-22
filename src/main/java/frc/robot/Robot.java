@@ -4,18 +4,29 @@
 
 package frc.robot;
 
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Drivetrain.DriveAuton;
 import frc.robot.Drivetrain.Drivetrain;
 import frc.robot.Intake.Intake;
+import frc.robot.Intake.IntakeAuton;
 import frc.robot.Shooter.Shooter;
+import frc.robot.Shooter.ShooterAuton;
 
 /**
  * This is a demo program showing the use of the DifferentialDrive class. Runs the motors with
  * arcade steering.
  */
 public class Robot extends TimedRobot {
+
+  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   private final XboxController driver_stick = new XboxController(0);
   private final XboxController operator_stick = new XboxController(1);
@@ -28,9 +39,41 @@ public class Robot extends TimedRobot {
     m_intake = new Intake();
     m_drivetrain = new Drivetrain();
     m_shooter = new Shooter();
+    
     m_drivetrain.setDefaultCommand(new frc.robot.Drivetrain.DriveTeleop(driver_stick));
     m_intake.setDefaultCommand(new frc.robot.Intake.IntakeTeleop(m_intake, operator_stick));
     m_shooter.setDefaultCommand(new frc.robot.Shooter.ShooterTeleop(m_shooter, operator_stick));
+    
+    m_chooser.setDefaultOption("Shoot High", highShot());
+    //m_chooser.addOption("Shoot Low", lowShot());
+    m_chooser.addOption("Drive Only", new DriveAuton(m_drivetrain, -0.3, 1.0));
+  }
+
+  private Command highShot() {
+    return new SequentialCommandGroup(
+      new DriveAuton(m_drivetrain, -0.3, 1.0),
+      new ParallelDeadlineGroup(
+        new WaitCommand(1.5)
+          .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)),
+        new ShooterAuton(m_shooter, 0.7, -0.5)
+      ),
+      new ParallelDeadlineGroup(
+        new DriveAuton(m_drivetrain, 0.3, 2.0),
+        new IntakeAuton(m_intake, 1.0)
+      ),
+      new DriveAuton(m_drivetrain, -0.3, 2.0),
+      new ParallelDeadlineGroup(
+        new WaitCommand(1.5)
+          .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)),
+        new ShooterAuton(m_shooter, 0.7, -0.5)
+      )
+    );
+
+  }
+  @Override
+  public void autonomousInit() {
+    CommandScheduler.getInstance().cancelAll();
+    CommandScheduler.getInstance().schedule(m_chooser.getSelected());
   }
 
   @Override

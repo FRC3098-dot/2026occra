@@ -15,7 +15,7 @@ public class DriveTeleop extends Command {
         // Drive with arcade drive.
         // That means that the Y axis drives forward
         // and backward, and the X turns left and right.
-        Robot.m_drivetrain.drive(-m_stick.getLeftY(), -m_stick.getRightX());
+        Robot.m_drivetrain.drive(-m_stick.getLeftY(), -m_stick.getRightX()*0.5);
     }
 
     @Override
