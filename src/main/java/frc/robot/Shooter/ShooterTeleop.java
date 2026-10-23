@@ -33,7 +33,9 @@ public class ShooterTeleop extends Command {
             double LowfrontSpeed = SmartDashboard.getNumber("Shooter Front Speed Low", 0.0);
             double LowbackSpeed = SmartDashboard.getNumber("Shooter Back Speed Low", 0.0);
             m_shooter.setShooterSpeed(LowfrontSpeed, LowbackSpeed);
-        } else {
+        } else if (m_stick.getBButton() == true) {                     // Reverse Shooter
+            m_shooter.setShooterSpeed(-0.5, 0.5);
+        } else {                                                       // Do nothing
             m_shooter.setShooterSpeed(0, 0);
         }
     }
