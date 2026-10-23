@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
 
     // Add the options for auton to select from
     m_chooser.setDefaultOption("Shoot High", highShot());
-    //m_chooser.addOption("Shoot Low", lowShot());
+    m_chooser.addOption("Shoot Low", lowShot());
     m_chooser.addOption("Drive Only", new DriveAuton(m_drivetrain, -0.3, 1.0));
   }
 
@@ -74,6 +74,24 @@ public class Robot extends TimedRobot {
 
   }
 
+    // LowShot function
+    private Command lowShot() {
+      return new SequentialCommandGroup(
+        new DriveAuton(m_drivetrain, -0.3, 1.0),
+        new ParallelDeadlineGroup(            // Runs the two commands simultaneously
+            new WaitCommand(1.5)
+                .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
+            new ShooterAuton(m_shooter, 0.7, -0.5)),
+        new ParallelDeadlineGroup(
+            new DriveAuton(m_drivetrain, 0.3, 2.0),
+            new IntakeAuton(m_intake, 1.0)),
+        new DriveAuton(m_drivetrain, -0.3, 2.0),
+        new ParallelDeadlineGroup(
+            new WaitCommand(1.5)
+                .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)),
+            new ShooterAuton(m_shooter, 0.7, -0.5)));
+    }
+    
   // Runs at start of auto
   @Override
   public void autonomousInit() {
