@@ -19,8 +19,8 @@ public class DriveTeleop extends Command {
         // Drive with arcade drive.
         // That means that the Left joystick Y axis drives forward
         // and backward, and the Right joystick X turns left and right.
-        double driveSpeed = SmartDashboard.getNumber("Drive Speed", 0.5);
-        double turnSpeed = SmartDashboard.getNumber("Turn Speed", 0.5);
+        double driveSpeed = SmartDashboard.getNumber("Drive Speed", 1.0);
+        double turnSpeed = SmartDashboard.getNumber("Turn Speed", 0.75);
         Robot.m_drivetrain.drive(-m_stick.getLeftY() * driveSpeed, -m_stick.getRightX() * turnSpeed);
     }
 
