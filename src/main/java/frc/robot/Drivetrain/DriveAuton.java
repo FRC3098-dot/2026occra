@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class DriveAuton extends Command {
 
+    // Define variables
     private final Drivetrain m_drivetrain;
     private final double m_speed;
     private final double m_duration;
@@ -16,11 +17,13 @@ public class DriveAuton extends Command {
         m_duration = duration;
     }
 
+    // Runs at command start
     @Override
     public void initialize() {
         m_startTime = Timer.getFPGATimestamp();
     }
 
+    // Loops until Finished
     @Override
     public void execute() {
         m_drivetrain.drive(m_speed, 0);
@@ -28,10 +31,12 @@ public class DriveAuton extends Command {
 
     @Override
     public boolean isFinished() {
+        // If current time - start time which is the time running >= duration then return true
         return Timer.getFPGATimestamp() - m_startTime >= m_duration;
     }
 
-        @Override
+    // Runs at command finished
+    @Override
     public void end(boolean interrupted) {
         m_drivetrain.drive(0, 0);
     }

@@ -5,6 +5,7 @@ import frc.robot.Robot;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class DriveTeleop extends Command {
+    // Set up the Controller
     private final XboxController m_stick;
     public DriveTeleop(XboxController stick) {
         m_stick = stick;
@@ -13,8 +14,8 @@ public class DriveTeleop extends Command {
     @Override
     public void execute() {
         // Drive with arcade drive.
-        // That means that the Y axis drives forward
-        // and backward, and the X turns left and right.
+        // That means that the Left joystick Y axis drives forward
+        // and backward, and the Right joystick X turns left and right.
         Robot.m_drivetrain.drive(-m_stick.getLeftY(), -m_stick.getRightX()*0.5);
     }
 

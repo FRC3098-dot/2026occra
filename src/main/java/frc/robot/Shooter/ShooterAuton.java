@@ -3,6 +3,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class ShooterAuton extends Command {
 
+    // Declare variables
     private final Shooter m_shooter;
     private final double m_frontSpeed;
     private final double m_backSpeed;
@@ -14,6 +15,7 @@ public class ShooterAuton extends Command {
         m_backSpeed = backSpeed;
     }
 
+    // Loop until command finished
     @Override
     public void execute() {
         m_shooter.setShooterSpeed(m_frontSpeed, m_backSpeed);

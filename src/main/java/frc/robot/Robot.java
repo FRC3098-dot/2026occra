@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -21,66 +20,74 @@ import frc.robot.Shooter.Shooter;
 import frc.robot.Shooter.ShooterAuton;
 
 /**
- * This is a demo program showing the use of the DifferentialDrive class. Runs the motors with
+ * This is the main program with the use of the DifferentialDrive class. Runs
+ * the motors with
  * arcade steering.
  */
 public class Robot extends TimedRobot {
 
+  // Create objects and put them in variables
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-
   private final XboxController driver_stick = new XboxController(0);
   private final XboxController operator_stick = new XboxController(1);
+
+  // Define variables as a type
   public static Drivetrain m_drivetrain;
   public static Intake m_intake;
   public static Shooter m_shooter;
 
   /** Called once at the beginning of the robot program. */
   public Robot() {
+
+    // Create new objects and put them in the predefined variables
     m_intake = new Intake();
     m_drivetrain = new Drivetrain();
     m_shooter = new Shooter();
-    
+
+    // Set default commands to teleop
     m_drivetrain.setDefaultCommand(new frc.robot.Drivetrain.DriveTeleop(driver_stick));
     m_intake.setDefaultCommand(new frc.robot.Intake.IntakeTeleop(m_intake, operator_stick));
     m_shooter.setDefaultCommand(new frc.robot.Shooter.ShooterTeleop(m_shooter, operator_stick));
-    
+
+    // Add the options for auton to select from
     m_chooser.setDefaultOption("Shoot High", highShot());
     //m_chooser.addOption("Shoot Low", lowShot());
     m_chooser.addOption("Drive Only", new DriveAuton(m_drivetrain, -0.3, 1.0));
   }
 
+  // HighShot function
   private Command highShot() {
     return new SequentialCommandGroup(
-      new DriveAuton(m_drivetrain, -0.3, 1.0),
-      new ParallelDeadlineGroup(
-        new WaitCommand(1.5)
-          .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)),
-        new ShooterAuton(m_shooter, 0.7, -0.5)
-      ),
-      new ParallelDeadlineGroup(
-        new DriveAuton(m_drivetrain, 0.3, 2.0),
-        new IntakeAuton(m_intake, 1.0)
-      ),
-      new DriveAuton(m_drivetrain, -0.3, 2.0),
-      new ParallelDeadlineGroup(
-        new WaitCommand(1.5)
-          .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)),
-        new ShooterAuton(m_shooter, 0.7, -0.5)
-      )
-    );
+        new DriveAuton(m_drivetrain, -0.3, 1.0),
+        new ParallelDeadlineGroup(            // Runs the two commands simultaneously
+            new WaitCommand(1.5)
+                .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
+            new ShooterAuton(m_shooter, 0.7, -0.5)),
+        new ParallelDeadlineGroup(
+            new DriveAuton(m_drivetrain, 0.3, 2.0),
+            new IntakeAuton(m_intake, 1.0)),
+        new DriveAuton(m_drivetrain, -0.3, 2.0),
+        new ParallelDeadlineGroup(
+            new WaitCommand(1.5)
+                .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)),
+            new ShooterAuton(m_shooter, 0.7, -0.5)));
 
   }
+
+  // Runs at start of auto
   @Override
   public void autonomousInit() {
     CommandScheduler.getInstance().cancelAll();
     CommandScheduler.getInstance().schedule(m_chooser.getSelected());
   }
 
+  // Runs at start of teleop
   @Override
   public void teleopInit() {
     CommandScheduler.getInstance().cancelAll();
   }
 
+  // Loops constantly
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
