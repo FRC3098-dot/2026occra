@@ -14,10 +14,10 @@ public class ShooterTeleop extends Command {
         m_stick = controller;
         addRequirements(m_shooter);
         // Put the motor power for each motor on High and low shot on dashboard
-        SmartDashboard.putNumber("Shooter Front Speed High", 0.45);
-        SmartDashboard.putNumber("Shooter Back Speed High", -0.3);
-        SmartDashboard.putNumber("Shooter Front Speed Low", 0.4);
-        SmartDashboard.putNumber("Shooter Back Speed Low", -0.3);
+        SmartDashboard.putNumber("Shooter Front Speed High", 2500);
+        SmartDashboard.putNumber("Shooter Back Speed High", -2500);
+        SmartDashboard.putNumber("Shooter Front Speed Low", 1500);
+        SmartDashboard.putNumber("Shooter Back Speed Low", -1500);
     }
 
     // Loop until command is finished
@@ -28,22 +28,22 @@ public class ShooterTeleop extends Command {
         if (m_stick.getRightTriggerAxis() > 0.3) {                      // High Shot
             double HighfrontSpeed = SmartDashboard.getNumber("Shooter Front Speed High", 0.0);
             double HighbackSpeed = SmartDashboard.getNumber("Shooter Back Speed High", 0.0);
-            m_shooter.setShooterSpeed(HighfrontSpeed, HighbackSpeed);
+            m_shooter.setShooterReference(HighfrontSpeed, HighbackSpeed);
         } else if (m_stick.getRightBumperButton() == true) {           // Low Shot
             double LowfrontSpeed = SmartDashboard.getNumber("Shooter Front Speed Low", 0.0);
             double LowbackSpeed = SmartDashboard.getNumber("Shooter Back Speed Low", 0.0);
-            m_shooter.setShooterSpeed(LowfrontSpeed, LowbackSpeed);
+            m_shooter.setShooterReference(LowfrontSpeed, LowbackSpeed);
         } else if (m_stick.getBButton() == true) {                     // Reverse Shooter
-            m_shooter.setShooterSpeed(-0.3, 0.3);
+            m_shooter.setShooterReference(-1000, -1000);
         } else {                                                       // Do nothing
-            m_shooter.setShooterSpeed(0, 0);
+            m_shooter.setShooterReference(0, 0);
         }
     }
 
     // Run at command finish
     @Override
     public void end(boolean interrupted) {
-        m_shooter.setShooterSpeed(0, 0);
+        m_shooter.setShooterReference(0, 0);
     }
 
     @Override
