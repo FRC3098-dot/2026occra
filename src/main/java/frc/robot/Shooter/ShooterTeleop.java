@@ -14,10 +14,10 @@ public class ShooterTeleop extends Command {
         m_stick = controller;
         addRequirements(m_shooter);
         // Put the motor power for each motor on High and low shot on dashboard
-        SmartDashboard.putNumber("Shooter Front Speed High", 0.7);
-        SmartDashboard.putNumber("Shooter Back Speed High", -0.5);
-        SmartDashboard.putNumber("Shooter Front Speed Low", 0.35);
-        SmartDashboard.putNumber("Shooter Back Speed Low", -0.25);
+        SmartDashboard.putNumber("Shooter Front Speed High", 0.45);
+        SmartDashboard.putNumber("Shooter Back Speed High", -0.3);
+        SmartDashboard.putNumber("Shooter Front Speed Low", 0.4);
+        SmartDashboard.putNumber("Shooter Back Speed Low", -0.3);
     }
 
     // Loop until command is finished
@@ -34,7 +34,7 @@ public class ShooterTeleop extends Command {
             double LowbackSpeed = SmartDashboard.getNumber("Shooter Back Speed Low", 0.0);
             m_shooter.setShooterSpeed(LowfrontSpeed, LowbackSpeed);
         } else if (m_stick.getBButton() == true) {                     // Reverse Shooter
-            m_shooter.setShooterSpeed(-0.5, 0.5);
+            m_shooter.setShooterSpeed(-0.3, 0.3);
         } else {                                                       // Do nothing
             m_shooter.setShooterSpeed(0, 0);
         }
