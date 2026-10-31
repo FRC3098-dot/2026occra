@@ -18,7 +18,7 @@ public class ShooterAuton extends Command {
     // Loop until command finished
     @Override
     public void execute() {
-        m_shooter.setShooterReference(m_frontSpeed, m_backSpeed);
+        m_shooter.setShooterPower(m_frontSpeed, m_backSpeed);
     }
 
     @Override
