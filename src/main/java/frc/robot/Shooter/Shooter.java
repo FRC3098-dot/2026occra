@@ -23,21 +23,40 @@ public class Shooter extends SubsystemBase {
 
     public Shooter() {
         SparkMaxConfig config = new SparkMaxConfig();
+        //Front Wheel Configuration
         // Set PID gains
         config.closedLoop
-            .p(0)
-            .i(0)
+            .p(0.00025)
+            .i(0.0000025)
             .d(0)
+            .iZone(200)
             .outputRange(-1, 1);
         // Set PID gains
         config.closedLoop.feedForward
             .kS(0)
-            .kV(0.00002)
+            .kV(0.002)
             .kA(0)
             .kG(0) // kG is a linear gravity feedforward, for an elevator
             .kCos(0) // kCos is a cosine gravity feedforward, for an arm
             .kCosRatio(0); // kCosRatio relates the encoder position to absolute position
         shooter_front.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+
+        // Rear wheel configuration
+        config.closedLoop
+            .p(0.00005)
+            .i(0.0000005)
+            .d(0)
+            .iZone(200)
+            .outputRange(-1, 1);
+        // Set PID gains
+        config.closedLoop.feedForward
+            .kS(0)
+            .kV(0.002)
+            .kA(0)
+            .kG(0) // kG is a linear gravity feedforward, for an elevator
+            .kCos(0) // kCos is a cosine gravity feedforward, for an arm
+            .kCosRatio(0); // kCosRatio relates the encoder position to absolute position
+        config.inverted(true);
         shooter_back.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
     }
 

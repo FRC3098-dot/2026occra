@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
     // Set default commands to teleop
     m_drivetrain.setDefaultCommand(new frc.robot.Drivetrain.DriveTeleop(driver_stick));
     m_intake.setDefaultCommand(new frc.robot.Intake.IntakeTeleop(m_intake, operator_stick));
-    m_shooter.setDefaultCommand(new frc.robot.Shooter.ShooterTeleop(m_shooter, operator_stick));
+    m_shooter.setDefaultCommand(new frc.robot.Shooter.ShooterTeleopRPM(m_shooter, operator_stick));
 
     // Add the options for auton to select from
     m_chooser.setDefaultOption("Shoot High", highShot());
