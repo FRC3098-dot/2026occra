@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Drivetrain.DriveAuton;
+import frc.robot.Drivetrain.DriveAutonStraight;
 import frc.robot.Drivetrain.Drivetrain;
 import frc.robot.Intake.Intake;
 import frc.robot.Intake.IntakeAuton;
@@ -50,12 +51,12 @@ public class Robot extends TimedRobot {
     // Set default commands to teleop
     m_drivetrain.setDefaultCommand(new frc.robot.Drivetrain.DriveTeleop(driver_stick));
     m_intake.setDefaultCommand(new frc.robot.Intake.IntakeTeleop(m_intake, operator_stick));
-    m_shooter.setDefaultCommand(new frc.robot.Shooter.ShooterTeleopRPM(m_shooter, operator_stick));
+    m_shooter.setDefaultCommand(new frc.robot.Shooter.ShooterTeleop(m_shooter, operator_stick));
 
     // Add the options for auton to select from
     m_chooser.setDefaultOption("Shoot High", highShot());
     m_chooser.addOption("Shoot Low", lowShot());
-    m_chooser.addOption("Drive Only", new DriveAuton(m_drivetrain, -0.3, 1.0));
+    m_chooser.addOption("Drive Only", new DriveAuton(m_drivetrain, -0.2, -1.5));
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 

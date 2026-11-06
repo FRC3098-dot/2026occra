@@ -7,33 +7,41 @@ public class DriveAutonStraight extends Command {
     // Define variables
     private final Drivetrain m_drivetrain;
     private final double m_speed;
-    private final double m_duration;
-    private double m_startTime;
+    private final double m_distance;
+    private double startDistance;
+    private double startAngle;
 
-    public DriveAutonStraight(Drivetrain drivetrain, double speed, double duration) {
+
+    public DriveAutonStraight(Drivetrain drivetrain, double speed, double distance) {
         addRequirements(drivetrain);
         m_drivetrain = drivetrain;
         m_speed = speed;
-        m_duration = duration;
+        m_distance = distance;
     }
 
     // Runs at command start
     @Override
     public void initialize() {
-        m_startTime = Timer.getFPGATimestamp();
+        startDistance = m_drivetrain.getEncoderDistance();
+        startAngle = m_drivetrain.getGryoYaw(); 
     }
 
     // Loops until Finished
     @Override
     public void execute() {
-        m_drivetrain.drive(m_speed, 0);
+        double angleError = m_drivetrain.getGryoYaw() - startAngle;
+        //double angleError = 0;
+        m_drivetrain.drive(m_speed, angleError * -0.0); // Adjust the turn value based on the angle error
     }
 
     @Override
     public boolean isFinished() {
         m_drivetrain.getEncoderDistance();
-        // If current time - start time which is the time running >= duration then return true
-        return Timer.getFPGATimestamp() - m_startTime >= m_duration;
+        if (m_distance > 0) {
+            return Math.abs(m_drivetrain.getEncoderDistance() - startDistance) >= m_distance;
+        } else {
+            return Math.abs(m_drivetrain.getEncoderDistance() - startDistance) <= m_distance;
+        }
     }
 
     // Runs at command finished

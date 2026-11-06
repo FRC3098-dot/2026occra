@@ -9,6 +9,7 @@ public class DriveAuton extends Command {
     private final double m_speed;
     private final double m_duration;
     private double m_startTime;
+    private double startAngle;
 
     public DriveAuton(Drivetrain drivetrain, double speed, double duration) {
         addRequirements(drivetrain);
@@ -21,12 +22,14 @@ public class DriveAuton extends Command {
     @Override
     public void initialize() {
         m_startTime = Timer.getFPGATimestamp();
+        startAngle = m_drivetrain.getGryoYaw(); 
     }
 
     // Loops until Finished
     @Override
     public void execute() {
-        m_drivetrain.drive(m_speed, 0);
+        double angleError = m_drivetrain.getGryoYaw() - startAngle;
+        m_drivetrain.drive(m_speed, angleError * -0.0);
     }
 
     @Override

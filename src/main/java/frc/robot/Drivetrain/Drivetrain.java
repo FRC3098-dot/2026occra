@@ -22,7 +22,7 @@ public class Drivetrain extends SubsystemBase {
     private final WPI_TalonSRX m_right2Motor = new WPI_TalonSRX(35);
     private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_left1Motor, m_right1Motor);
     private final Pigeon2 m_pigeon = new Pigeon2(45);
-    private final Encoder m_rightEncoder = new Encoder(0, 1);
+    private final Encoder m_rightEncoder = new Encoder(0, 1, true);
 
     public Drivetrain() {
         // Make the back motors of each side follow the front of the same side
@@ -46,7 +46,7 @@ public class Drivetrain extends SubsystemBase {
         // result in both sides moving forward. Depending on how your robot's
         // gearbox is constructed, you might have to invert the left side instead.
 
-        m_rightEncoder.setDistancePerPulse(0.0005); // Set the distance per pulse for the encoder
+        m_rightEncoder.setDistancePerPulse(128.5/3709); // Set the distance per pulse for the encoder
     }
 
     @Override

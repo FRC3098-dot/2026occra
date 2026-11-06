@@ -14,8 +14,8 @@ public class ShooterTeleopRPM extends Command {
         m_stick = controller;
         addRequirements(m_shooter);
         // Put the motor power for each motor on High and low shot on dashboard
-        SmartDashboard.putNumber("Shooter Front Speed High", 1708);
-        SmartDashboard.putNumber("Shooter Back Speed High", 862);
+        SmartDashboard.putNumber("Shooter Front Speed High", 1582);
+        SmartDashboard.putNumber("Shooter Back Speed High", 800);
         SmartDashboard.putNumber("Shooter Front Speed Low", 1986);
         SmartDashboard.putNumber("Shooter Back Speed Low", -1419);
     }
