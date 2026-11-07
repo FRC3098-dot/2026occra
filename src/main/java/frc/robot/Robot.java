@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -64,7 +66,7 @@ public class Robot extends TimedRobot {
   // HighShot function
   private Command highShot() {
     return new SequentialCommandGroup(
-        new DriveAuton(m_drivetrain, -0.6, 0.8),
+        new DriveAuton(m_drivetrain, -0.8, 1.0),
         new ParallelDeadlineGroup(            // Runs the two commands simultaneously
             new WaitCommand(1.5)
                 .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
@@ -74,10 +76,10 @@ public class Robot extends TimedRobot {
                 .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
             new ShooterAutonRPM(m_shooter, 2014, 1105)),
         new ParallelDeadlineGroup(
-            new DriveAuton(m_drivetrain, 0.80, 1.0),
+            new DriveAuton(m_drivetrain, 0.80, 1.5),
             new ShooterAutonRPM(m_shooter, -500, -500),
             new IntakeAuton(m_intake, 1.0)),
-        new DriveAuton(m_drivetrain, -0.80, 1.0),
+        new DriveAuton(m_drivetrain, -0.80, 1.5),
         new ParallelDeadlineGroup(
             new WaitCommand(1.5)
                 .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)),
@@ -88,7 +90,7 @@ public class Robot extends TimedRobot {
     // LowShot function
     private Command lowShot() {
       return new SequentialCommandGroup(
-        new DriveAuton(m_drivetrain, -0.5, 1.0),
+        new DriveAuton(m_drivetrain, -0.8, 1.0),
         new ParallelDeadlineGroup(            // Runs the two commands simultaneously
             new WaitCommand(1.5)
                 .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
@@ -98,10 +100,10 @@ public class Robot extends TimedRobot {
                 .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
             new ShooterAutonRPM(m_shooter, 2014, 1067)),
         new ParallelDeadlineGroup(
-            new DriveAuton(m_drivetrain, 0.5, 4.0),
+            new DriveAuton(m_drivetrain, 0.5, 3.5),
             new ShooterAutonRPM(m_shooter, -500, -500),
             new IntakeAuton(m_intake, 1.0)),
-        new DriveAuton(m_drivetrain, -0.5, 4.0),
+        new DriveAuton(m_drivetrain, -0.5, 3.5),
         new ParallelDeadlineGroup(
             new WaitCommand(1.5)
                 .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)),
@@ -124,6 +126,7 @@ public class Robot extends TimedRobot {
   // Loops constantly
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("MatchTime", Timer.getMatchTime());
     CommandScheduler.getInstance().run();
   }
 }

@@ -11,7 +11,7 @@ public class DriveTeleop extends Command {
     public DriveTeleop(XboxController stick) {
         m_stick = stick;
         addRequirements(Robot.m_drivetrain);
-        SmartDashboard.putNumber("Drive Speed", 1.0);
+        SmartDashboard.putNumber("Drive Speed", 0.8);
         SmartDashboard.putNumber("Turn Speed", 0.75);
     }
     @Override
@@ -19,7 +19,7 @@ public class DriveTeleop extends Command {
         // Drive with arcade drive.
         // That means that the Left joystick Y axis drives forward
         // and backward, and the Right joystick X turns left and right.
-        double driveSpeed = SmartDashboard.getNumber("Drive Speed", 1.0);
+        double driveSpeed = SmartDashboard.getNumber("Drive Speed", 1);
         double turnSpeed = SmartDashboard.getNumber("Turn Speed", 0.75);
         Robot.m_drivetrain.drive(-m_stick.getLeftY() * driveSpeed, -m_stick.getRightX() * turnSpeed);
     }

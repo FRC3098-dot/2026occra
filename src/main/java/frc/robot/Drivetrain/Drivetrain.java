@@ -3,7 +3,9 @@ package frc.robot.Drivetrain;
 import static edu.wpi.first.units.Units.Degrees;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.units.AngleUnit;
@@ -25,6 +27,16 @@ public class Drivetrain extends SubsystemBase {
     private final Encoder m_rightEncoder = new Encoder(0, 1, true);
 
     public Drivetrain() {
+
+        // Config the motor current limits
+        TalonSRXConfiguration config = new TalonSRXConfiguration();
+        config.continuousCurrentLimit = 30;
+        config.peakCurrentLimit = 50;
+        m_left1Motor.configAllSettings(config);
+        m_left2Motor.configAllSettings(config);
+        m_right1Motor.configAllSettings(config);
+        m_right2Motor.configAllSettings(config);
+
         // Make the back motors of each side follow the front of the same side
         m_left2Motor.follow(m_left1Motor);
         m_right2Motor.follow(m_right1Motor);
@@ -47,6 +59,8 @@ public class Drivetrain extends SubsystemBase {
         // gearbox is constructed, you might have to invert the left side instead.
 
         m_rightEncoder.setDistancePerPulse(128.5/3709); // Set the distance per pulse for the encoder
+
+
     }
 
     @Override
