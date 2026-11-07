@@ -20,6 +20,7 @@ import frc.robot.Intake.Intake;
 import frc.robot.Intake.IntakeAuton;
 import frc.robot.Shooter.Shooter;
 import frc.robot.Shooter.ShooterAuton;
+import frc.robot.Shooter.ShooterAutonRPM;
 
 /**
  * This is the main program with the use of the DifferentialDrive class. Runs
@@ -51,35 +52,36 @@ public class Robot extends TimedRobot {
     // Set default commands to teleop
     m_drivetrain.setDefaultCommand(new frc.robot.Drivetrain.DriveTeleop(driver_stick));
     m_intake.setDefaultCommand(new frc.robot.Intake.IntakeTeleop(m_intake, operator_stick));
-    m_shooter.setDefaultCommand(new frc.robot.Shooter.ShooterTeleop(m_shooter, operator_stick));
+    m_shooter.setDefaultCommand(new frc.robot.Shooter.ShooterTeleopRPM(m_shooter, operator_stick));
 
     // Add the options for auton to select from
     m_chooser.setDefaultOption("Shoot High", highShot());
     m_chooser.addOption("Shoot Low", lowShot());
-    m_chooser.addOption("Drive Only", new DriveAuton(m_drivetrain, -0.2, -1.5));
+    m_chooser.addOption("Drive Only", new DriveAuton(m_drivetrain, -0.5, -1.5));
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
   // HighShot function
   private Command highShot() {
     return new SequentialCommandGroup(
-        new DriveAuton(m_drivetrain, -0.5, 1.0),
+        new DriveAuton(m_drivetrain, -0.6, 0.8),
         new ParallelDeadlineGroup(            // Runs the two commands simultaneously
             new WaitCommand(1.5)
                 .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
-            new ShooterAuton(m_shooter, 0.45, -0.3)),
+            new ShooterAutonRPM(m_shooter, 2014, 1105)),
         new ParallelDeadlineGroup(            // Runs the two commands simultaneously
             new WaitCommand(1.5)
                 .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
-            new ShooterAuton(m_shooter, 0.45, -0.3)),
+            new ShooterAutonRPM(m_shooter, 2014, 1105)),
         new ParallelDeadlineGroup(
-            new DriveAuton(m_drivetrain, 0.5, 1.0 * 2),
+            new DriveAuton(m_drivetrain, 0.80, 1.0),
+            new ShooterAutonRPM(m_shooter, -500, -500),
             new IntakeAuton(m_intake, 1.0)),
-        new DriveAuton(m_drivetrain, -0.5, 1.0 * 2),
+        new DriveAuton(m_drivetrain, -0.80, 1.0),
         new ParallelDeadlineGroup(
             new WaitCommand(1.5)
                 .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)),
-            new ShooterAuton(m_shooter, 0.45, -0.3)));
+            new ShooterAutonRPM(m_shooter, 2014, 1105)));
 
   }
 
@@ -90,19 +92,20 @@ public class Robot extends TimedRobot {
         new ParallelDeadlineGroup(            // Runs the two commands simultaneously
             new WaitCommand(1.5)
                 .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
-            new ShooterAuton(m_shooter, 0.4, -03)),
+            new ShooterAutonRPM(m_shooter, 2014, 1067)),
         new ParallelDeadlineGroup(            // Runs the two commands simultaneously
             new WaitCommand(1.5)
                 .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
-            new ShooterAuton(m_shooter, 0.4, -0.3)),
+            new ShooterAutonRPM(m_shooter, 2014, 1067)),
         new ParallelDeadlineGroup(
-            new DriveAuton(m_drivetrain, 0.5, 1.0 * 2),
+            new DriveAuton(m_drivetrain, 0.5, 4.0),
+            new ShooterAutonRPM(m_shooter, -500, -500),
             new IntakeAuton(m_intake, 1.0)),
-        new DriveAuton(m_drivetrain, -0.5, 1.0 * 2.5),
+        new DriveAuton(m_drivetrain, -0.5, 4.0),
         new ParallelDeadlineGroup(
             new WaitCommand(1.5)
                 .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)),
-            new ShooterAuton(m_shooter, 0.4, -0.3)));
+            new ShooterAutonRPM(m_shooter, 2014, 1067)));
     }
     
   // Runs at start of auto

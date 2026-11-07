@@ -14,6 +14,7 @@ public class ShooterTeleop extends Command {
         m_stick = controller;
         addRequirements(m_shooter);
         // Put the motor power for each motor on High and low shot on dashboard
+        // Here is where you can change the default motor power for each shot
         SmartDashboard.putNumber("Shooter Front Speed High", 0.7);
         SmartDashboard.putNumber("Shooter Back Speed High", -0.5);
         SmartDashboard.putNumber("Shooter Front Speed Low", 0.35);
