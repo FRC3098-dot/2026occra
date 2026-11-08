@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
@@ -12,17 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Drivetrain.DriveAuton;
-import frc.robot.Drivetrain.DriveAutonStraight;
 import frc.robot.Drivetrain.Drivetrain;
 import frc.robot.Intake.Intake;
-import frc.robot.Intake.IntakeAuton;
 import frc.robot.Shooter.Shooter;
-import frc.robot.Shooter.ShooterAuton;
-import frc.robot.Shooter.ShooterAutonRPM;
 
 /**
  * This is the main program with the use of the DifferentialDrive class. Runs
@@ -57,58 +48,12 @@ public class Robot extends TimedRobot {
     m_shooter.setDefaultCommand(new frc.robot.Shooter.ShooterTeleopRPM(m_shooter, operator_stick));
 
     // Add the options for auton to select from
-    m_chooser.setDefaultOption("Shoot High", highShot());
-    m_chooser.addOption("Shoot Low", lowShot());
-    m_chooser.addOption("Drive Only", new DriveAuton(m_drivetrain, -0.5, -1.5));
+    autons autons = new autons();
+    m_chooser.setDefaultOption("Shoot High", autons.highShot());
+    m_chooser.addOption("Shoot Low", autons.lowShot());
+    m_chooser.addOption("Drive Only", autons.driveOnly());
     SmartDashboard.putData("Auto choices", m_chooser);
   }
-
-  // HighShot function
-  private Command highShot() {
-    return new SequentialCommandGroup(
-        new DriveAuton(m_drivetrain, -0.8, 1.0),
-        new ParallelDeadlineGroup(            // Runs the two commands simultaneously
-            new WaitCommand(1.5)
-                .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
-            new ShooterAutonRPM(m_shooter, 2014, 1105)),
-        new ParallelDeadlineGroup(            // Runs the two commands simultaneously
-            new WaitCommand(1.5)
-                .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
-            new ShooterAutonRPM(m_shooter, 2014, 1105)),
-        new ParallelDeadlineGroup(
-            new DriveAuton(m_drivetrain, 0.80, 1.5),
-            new ShooterAutonRPM(m_shooter, -500, -500),
-            new IntakeAuton(m_intake, 1.0)),
-        new DriveAuton(m_drivetrain, -0.80, 1.5),
-        new ParallelDeadlineGroup(
-            new WaitCommand(1.5)
-                .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)),
-            new ShooterAutonRPM(m_shooter, 2014, 1105)));
-
-  }
-
-    // LowShot function
-    private Command lowShot() {
-      return new SequentialCommandGroup(
-        new DriveAuton(m_drivetrain, -0.8, 1.0),
-        new ParallelDeadlineGroup(            // Runs the two commands simultaneously
-            new WaitCommand(1.5)
-                .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
-            new ShooterAutonRPM(m_shooter, 2014, 1067)),
-        new ParallelDeadlineGroup(            // Runs the two commands simultaneously
-            new WaitCommand(1.5)
-                .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
-            new ShooterAutonRPM(m_shooter, 2014, 1067)),
-        new ParallelDeadlineGroup(
-            new DriveAuton(m_drivetrain, 0.5, 3.5),
-            new ShooterAutonRPM(m_shooter, -500, -500),
-            new IntakeAuton(m_intake, 1.0)),
-        new DriveAuton(m_drivetrain, -0.5, 3.5),
-        new ParallelDeadlineGroup(
-            new WaitCommand(1.5)
-                .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)),
-            new ShooterAutonRPM(m_shooter, 2014, 1067)));
-    }
     
   // Runs at start of auto
   @Override
