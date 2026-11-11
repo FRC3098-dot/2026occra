@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
     m_shooter.setDefaultCommand(new frc.robot.Shooter.ShooterTeleopRPM(m_shooter, operator_stick));
 
     // Add the options for auton to select from
-    autons autons = new autons();
+    autons autons = new autons(m_drivetrain, m_intake, m_shooter);
     m_chooser.setDefaultOption("Shoot High", autons.highShot());
     m_chooser.addOption("Shoot Low", autons.lowShot());
     m_chooser.addOption("Drive Only", autons.driveOnly());

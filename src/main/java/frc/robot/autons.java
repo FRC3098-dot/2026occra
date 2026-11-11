@@ -15,6 +15,11 @@ public class autons {
     Drivetrain m_drivetrain;
     Intake m_intake;
     Shooter m_shooter;
+    public autons (Drivetrain drive, Intake intake, Shooter shooter) {
+        m_drivetrain = drive;
+        m_intake = intake;
+        m_shooter = shooter;
+    }
 
     // Drive Only Auto
     Command driveOnly() {
