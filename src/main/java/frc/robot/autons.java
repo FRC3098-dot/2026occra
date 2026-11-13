@@ -29,7 +29,7 @@ public class autons {
     // HighShot Auto
     Command highShot() {
         return new SequentialCommandGroup(
-            new DriveAuton(m_drivetrain, -0.8, 1.0),
+            new DriveAuton(m_drivetrain, -0.8, 0.708),
             new ParallelDeadlineGroup(            // Runs the two commands simultaneously
                 new WaitCommand(1.5)
                     .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
@@ -37,38 +37,43 @@ public class autons {
             new ParallelDeadlineGroup(            // Runs the two commands simultaneously
                 new WaitCommand(1.5)
                     .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
-                new ShooterAutonRPM(m_shooter, 2014, 1105)),
+                new ShooterAutonRPM(m_shooter, 1750, 700)),
             new ParallelDeadlineGroup(
-                new DriveAuton(m_drivetrain, 0.80, 1.5),
+                new DriveAuton(m_drivetrain, 0.80, 1.8),
                 new ShooterAutonRPM(m_shooter, -500, -500),
                 new IntakeAuton(m_intake, 1.0)),
-            new DriveAuton(m_drivetrain, -0.80, 1.5),
+            new DriveAuton(m_drivetrain, -0.80, 1.802),
             new ParallelDeadlineGroup(
                 new WaitCommand(1.5)
                     .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)),
-                new ShooterAutonRPM(m_shooter, 2014, 1105)));
+                new ShooterAutonRPM(m_shooter, 2014, 1105)),
+            new ShooterAutonRPM(m_shooter, 1750, 700));
+
 
     }
     // LowShot Auto
     Command lowShot() {
-      return new SequentialCommandGroup(
-        new DriveAuton(m_drivetrain, -0.8, 1.0),
-        new ParallelDeadlineGroup(            // Runs the two commands simultaneously
-            new WaitCommand(1.5)
-                .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
-            new ShooterAutonRPM(m_shooter, 2014, 1067)),
-        new ParallelDeadlineGroup(            // Runs the two commands simultaneously
-            new WaitCommand(1.5)
-                .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
-            new ShooterAutonRPM(m_shooter, 2014, 1067)),
-        new ParallelDeadlineGroup(
-            new DriveAuton(m_drivetrain, 0.5, 3.5),
-            new ShooterAutonRPM(m_shooter, -500, -500),
-            new IntakeAuton(m_intake, 1.0)),
-        new DriveAuton(m_drivetrain, -0.5, 3.5),
-        new ParallelDeadlineGroup(
-            new WaitCommand(1.5)
-                .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)),
-            new ShooterAutonRPM(m_shooter, 2014, 1067)));
+        return new SequentialCommandGroup(
+            new DriveAuton(m_drivetrain, -0.8, 0.708),
+            new ParallelDeadlineGroup(            // Runs the two commands simultaneously
+                new WaitCommand(1.5)
+                    .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
+                new ShooterAutonRPM(m_shooter, 2014, 1105)),
+            new ParallelDeadlineGroup(            // Runs the two commands simultaneously
+                new WaitCommand(1.5)
+                    .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)), // Runs after the WaitCommand
+                new ShooterAutonRPM(m_shooter, 1750, 700)),
+            new ParallelDeadlineGroup(
+                new DriveAuton(m_drivetrain, 0.80, 1.8),
+                new ShooterAutonRPM(m_shooter, -500, -500),
+                new IntakeAuton(m_intake, 1.0)),
+            new DriveAuton(m_drivetrain, -0.80, 1.802),
+            new ParallelDeadlineGroup(
+                new WaitCommand(1.5)
+                    .andThen(new IntakeAuton(m_intake, 1.0).withTimeout(1.5)),
+                new ShooterAutonRPM(m_shooter, 2014, 1105)),
+            new ShooterAutonRPM(m_shooter, 1750, 700));
+
+
     }
 }

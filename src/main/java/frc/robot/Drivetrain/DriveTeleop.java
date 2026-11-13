@@ -11,8 +11,8 @@ public class DriveTeleop extends Command {
     public DriveTeleop(XboxController stick) {
         m_stick = stick;
         addRequirements(Robot.m_drivetrain);
-        SmartDashboard.putNumber("Drive Speed", 0.8);
-        SmartDashboard.putNumber("Turn Speed", 0.75);
+        SmartDashboard.putNumber("Drive Speed", 1.0);
+        SmartDashboard.putNumber("Turn Speed", 0.80);
     }
     @Override
     public void execute() {

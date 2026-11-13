@@ -26,7 +26,7 @@ public class Shooter extends SubsystemBase {
         //Front Wheel Configuration
         // Set PID gains
         config.closedLoop
-            .p(0.0002)
+            .p(0.0003)
             .i(0.0000025)
             .d(0)
             .iZone(200)
@@ -43,7 +43,7 @@ public class Shooter extends SubsystemBase {
 
         // Rear wheel configuration
         config.closedLoop
-            .p(0.00005)
+            .p(0.00008)
             .i(0.0000005)
             .d(0)
             .iZone(200)
