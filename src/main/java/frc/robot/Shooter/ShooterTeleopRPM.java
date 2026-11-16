@@ -36,6 +36,8 @@ public class ShooterTeleopRPM extends Command {
             m_shooter.setSetPoint(LowfrontSpeed, LowbackSpeed);
         } else if (m_stick.getBButton() == true) {                     // Reverse Shooter
             m_shooter.setSetPoint(-900, -500);
+        } else if (m_stick.getXButton() == true) {
+            m_shooter.setSetPoint(2114, 1205);
         } else {                                                       // Do nothing
             m_shooter.setShooterPower(0, 0);
         }
